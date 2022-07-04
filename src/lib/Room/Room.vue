@@ -103,6 +103,8 @@
 							</room-message>
 						</div>
 					</transition-group>
+					<slot name="bottonLoader">
+					</slot>
 				</div>
 			</div>
 		</div>
