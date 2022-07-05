@@ -156,6 +156,7 @@ export interface Slots {
 	'room-list-options-icon': VNode[]
 	'search-icon': VNode[]
 	'add-icon': VNode[]
+	'bottom-loader': VNode[]
 	[key: string]: VNode[]
 }
 
