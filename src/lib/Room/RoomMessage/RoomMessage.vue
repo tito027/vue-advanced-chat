@@ -22,189 +22,190 @@
 			</format-message>
 		</div>
 
-		<div
-			v-else
-			class="vac-message-box"
-			:class="{ 'vac-offset-current': message.senderId === currentUserId }"
-			@click="selectMessage"
-		>
+		<div v-else>
 			<slot name="message" v-bind="{ message }">
 				<div
-					v-if="message.avatar && message.senderId !== currentUserId"
-					class="vac-avatar"
-					:style="{ 'background-image': `url('${message.avatar}')` }"
-				/>
-				<div
-					v-if="hasSenderUserAvatar && !message.avatar"
-					class="vac-avatar-offset"
-				/>
-				<div
-					class="vac-message-container"
-					:class="{
-						'vac-message-container-offset': messageOffset
-					}"
+					class="vac-message-box"
+					:class="{ 'vac-offset-current': message.senderId === currentUserId }"
+					@click="selectMessage"
 				>
 					<div
-						class="vac-message-card"
+						v-if="message.avatar && message.senderId !== currentUserId"
+						class="vac-avatar"
+						:style="{ 'background-image': `url('${message.avatar}')` }"
+					/>
+					<div
+						v-if="hasSenderUserAvatar && !message.avatar"
+						class="vac-avatar-offset"
+					/>
+					<div
+						class="vac-message-container"
 						:class="{
-							'vac-message-highlight': isMessageHover,
-							'vac-message-current': message.senderId === currentUserId,
-							'vac-message-deleted': message.deleted,
-							'vac-item-clickable': messageSelectionEnabled,
-							'vac-message-selected': isMessageSelected
+							'vac-message-container-offset': messageOffset
 						}"
-						@mouseover="onHoverMessage"
-						@mouseleave="onLeaveMessage"
 					>
 						<div
-							v-if="showUsername"
-							class="vac-text-username"
+							class="vac-message-card"
 							:class="{
-								'vac-username-reply': !message.deleted && message.replyMessage
+								'vac-message-highlight': isMessageHover,
+								'vac-message-current': message.senderId === currentUserId,
+								'vac-message-deleted': message.deleted,
+								'vac-item-clickable': messageSelectionEnabled,
+								'vac-message-selected': isMessageSelected
 							}"
+							@mouseover="onHoverMessage"
+							@mouseleave="onLeaveMessage"
 						>
-							<span>{{ message.username }}</span>
-						</div>
+							<div
+								v-if="showUsername"
+								class="vac-text-username"
+								:class="{
+									'vac-username-reply': !message.deleted && message.replyMessage
+								}"
+							>
+								<span>{{ message.username }}</span>
+							</div>
 
-						<message-reply
-							v-if="!message.deleted && message.replyMessage"
-							:message="message"
-							:room-users="roomUsers"
-							:text-formatting="textFormatting"
-							:link-options="linkOptions"
-						>
-							<template v-for="(i, name) in $slots" #[name]="data">
-								<slot :name="name" v-bind="data" />
-							</template>
-						</message-reply>
-
-						<div v-if="message.deleted">
-							<slot name="deleted-icon">
-								<svg-icon name="deleted" class="vac-icon-deleted" />
-							</slot>
-							<span>{{ textMessages.MESSAGE_DELETED }}</span>
-						</div>
-
-						<format-message
-							v-else-if="!message.files || !message.files.length"
-							:content="message.content"
-							:users="roomUsers"
-							:text-formatting="textFormatting"
-							:link-options="linkOptions"
-							@open-user-tag="openUserTag"
-						>
-							<template v-for="(i, name) in $slots" #[name]="data">
-								<slot :name="name" v-bind="data" />
-							</template>
-						</format-message>
-
-						<message-files
-							v-else-if="!isAudio || message.files.length > 1"
-							:current-user-id="currentUserId"
-							:message="message"
-							:room-users="roomUsers"
-							:text-formatting="textFormatting"
-							:link-options="linkOptions"
-							:message-selection-enabled="messageSelectionEnabled"
-							@open-file="openFile"
-							@open-user-tag="openUserTag"
-						>
-							<template v-for="(i, name) in $slots" #[name]="data">
-								<slot :name="name" v-bind="data" />
-							</template>
-						</message-files>
-
-						<template v-else>
-							<audio-player
-								:message-id="message._id"
-								:src="message.files[0].url"
-								:message-selection-enabled="messageSelectionEnabled"
-								@update-progress-time="progressTime = $event"
-								@hover-audio-progress="hoverAudioProgress = $event"
+							<message-reply
+								v-if="!message.deleted && message.replyMessage"
+								:message="message"
+								:room-users="roomUsers"
+								:text-formatting="textFormatting"
+								:link-options="linkOptions"
 							>
 								<template v-for="(i, name) in $slots" #[name]="data">
 									<slot :name="name" v-bind="data" />
 								</template>
-							</audio-player>
+							</message-reply>
 
-							<div v-if="!message.deleted" class="vac-progress-time">
-								{{ progressTime }}
+							<div v-if="message.deleted">
+								<slot name="deleted-icon">
+									<svg-icon name="deleted" class="vac-icon-deleted" />
+								</slot>
+								<span>{{ textMessages.MESSAGE_DELETED }}</span>
 							</div>
-						</template>
 
-						<div class="vac-text-timestamp">
-							<div
-								v-if="message.edited && !message.deleted"
-								class="vac-icon-edited"
+							<format-message
+								v-else-if="!message.files || !message.files.length"
+								:content="message.content"
+								:users="roomUsers"
+								:text-formatting="textFormatting"
+								:link-options="linkOptions"
+								@open-user-tag="openUserTag"
 							>
-								<slot name="pencil-icon">
-									<svg-icon name="pencil" />
-								</slot>
+								<template v-for="(i, name) in $slots" #[name]="data">
+									<slot :name="name" v-bind="data" />
+								</template>
+							</format-message>
+
+							<message-files
+								v-else-if="!isAudio || message.files.length > 1"
+								:current-user-id="currentUserId"
+								:message="message"
+								:room-users="roomUsers"
+								:text-formatting="textFormatting"
+								:link-options="linkOptions"
+								:message-selection-enabled="messageSelectionEnabled"
+								@open-file="openFile"
+								@open-user-tag="openUserTag"
+							>
+								<template v-for="(i, name) in $slots" #[name]="data">
+									<slot :name="name" v-bind="data" />
+								</template>
+							</message-files>
+
+							<template v-else>
+								<audio-player
+									:message-id="message._id"
+									:src="message.files[0].url"
+									:message-selection-enabled="messageSelectionEnabled"
+									@update-progress-time="progressTime = $event"
+									@hover-audio-progress="hoverAudioProgress = $event"
+								>
+									<template v-for="(i, name) in $slots" #[name]="data">
+										<slot :name="name" v-bind="data" />
+									</template>
+								</audio-player>
+
+								<div v-if="!message.deleted" class="vac-progress-time">
+									{{ progressTime }}
+								</div>
+							</template>
+
+							<div class="vac-text-timestamp">
+								<div
+									v-if="message.edited && !message.deleted"
+									class="vac-icon-edited"
+								>
+									<slot name="pencil-icon">
+										<svg-icon name="pencil" />
+									</slot>
+								</div>
+								<span>{{ message.timestamp }}</span>
+								<span v-if="isCheckmarkVisible">
+									<slot name="checkmark-icon" v-bind="{ message }">
+										<svg-icon
+											:name="
+												message.distributed ? 'double-checkmark' : 'checkmark'
+											"
+											:param="message.seen ? 'seen' : ''"
+											class="vac-icon-check"
+										/>
+									</slot>
+								</span>
 							</div>
-							<span>{{ message.timestamp }}</span>
-							<span v-if="isCheckmarkVisible">
-								<slot name="checkmark-icon" v-bind="{ message }">
-									<svg-icon
-										:name="
-											message.distributed ? 'double-checkmark' : 'checkmark'
-										"
-										:param="message.seen ? 'seen' : ''"
-										class="vac-icon-check"
-									/>
-								</slot>
-							</span>
+
+							<message-actions
+								:current-user-id="currentUserId"
+								:message="message"
+								:message-actions="messageActions"
+								:show-reaction-emojis="showReactionEmojis"
+								:message-hover="messageHover"
+								:hover-message-id="hoverMessageId"
+								:hover-audio-progress="hoverAudioProgress"
+								@update-message-hover="messageHover = $event"
+								@update-options-opened="optionsOpened = $event"
+								@update-emoji-opened="emojiOpened = $event"
+								@message-action-handler="messageActionHandler"
+								@send-message-reaction="sendMessageReaction"
+							>
+								<template v-for="(i, name) in $slots" #[name]="data">
+									<slot :name="name" v-bind="data" />
+								</template>
+							</message-actions>
 						</div>
 
-						<message-actions
+						<message-reactions
 							:current-user-id="currentUserId"
 							:message="message"
-							:message-actions="messageActions"
-							:show-reaction-emojis="showReactionEmojis"
-							:message-hover="messageHover"
-							:hover-message-id="hoverMessageId"
-							:hover-audio-progress="hoverAudioProgress"
-							@update-message-hover="messageHover = $event"
-							@update-options-opened="optionsOpened = $event"
-							@update-emoji-opened="emojiOpened = $event"
-							@message-action-handler="messageActionHandler"
 							@send-message-reaction="sendMessageReaction"
-						>
-							<template v-for="(i, name) in $slots" #[name]="data">
-								<slot :name="name" v-bind="data" />
-							</template>
-						</message-actions>
+						/>
 					</div>
-
-					<message-reactions
-						:current-user-id="currentUserId"
-						:message="message"
-						@send-message-reaction="sendMessageReaction"
+					<slot name="message-failure" v-bind="{ message }">
+						<div
+							v-if="message.failure && message.senderId === currentUserId"
+							class="vac-failure-container vac-svg-button"
+							:class="{
+								'vac-failure-container-avatar':
+									message.avatar && message.senderId === currentUserId
+							}"
+							@click="$emit('open-failed-message', { message })"
+						>
+							<div class="vac-failure-text">
+								!
+							</div>
+						</div>
+					</slot>
+					<div
+						v-if="message.avatar && message.senderId === currentUserId"
+						class="vac-avatar vac-avatar-current"
+						:style="{ 'background-image': `url('${message.avatar}')` }"
+					/>
+					<div
+						v-if="hasCurrentUserAvatar && !message.avatar"
+						class="vac-avatar-current-offset"
 					/>
 				</div>
-				<slot name="message-failure" v-bind="{ message }">
-					<div
-						v-if="message.failure && message.senderId === currentUserId"
-						class="vac-failure-container vac-svg-button"
-						:class="{
-							'vac-failure-container-avatar':
-								message.avatar && message.senderId === currentUserId
-						}"
-						@click="$emit('open-failed-message', { message })"
-					>
-						<div class="vac-failure-text">
-							!
-						</div>
-					</div>
-				</slot>
-				<div
-					v-if="message.avatar && message.senderId === currentUserId"
-					class="vac-avatar vac-avatar-current"
-					:style="{ 'background-image': `url('${message.avatar}')` }"
-				/>
-				<div
-					v-if="hasCurrentUserAvatar && !message.avatar"
-					class="vac-avatar-current-offset"
-				/>
 			</slot>
 		</div>
 	</div>
