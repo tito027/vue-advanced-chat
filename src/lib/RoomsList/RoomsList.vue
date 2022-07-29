@@ -196,7 +196,7 @@ export default {
 			this.$emit('fetch-room', { room })
 		},
 		loadMoreRooms() {
-			if (this.loadingMoreRooms) return
+			if (this.loadingMoreRooms && this.loadingRooms) return
 
 			if (this.roomsLoaded) {
 				this.loadingMoreRooms = false
