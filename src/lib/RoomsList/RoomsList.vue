@@ -58,8 +58,8 @@
 				</room-content>
 			</div>
 			<transition name="vac-fade-message">
-				<div v-if="rooms.length && !loadingRooms" id="infinite-loader-rooms">
-					<loader :show="showLoader" :infinite="true">
+				<div v-if="rooms.length && !roomsLoaded" id="infinite-loader-rooms">
+					<loader :show="true" :infinite="true">
 						<template v-for="(idx, name) in $slots" #[name]="data">
 							<slot :name="name" v-bind="data" />
 						</template>
