@@ -1,4 +1,8 @@
 <template>
+	<div v-show="Object.keys(room).length && !showFooter">
+		<slot name="footer-buttons">
+		</slot>
+	</div>
 	<div
 		v-show="Object.keys(room).length && showFooter"
 		id="room-footer"
