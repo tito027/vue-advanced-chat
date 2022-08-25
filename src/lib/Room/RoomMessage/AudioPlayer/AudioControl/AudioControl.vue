@@ -1,12 +1,12 @@
 <template>
 	<div
 		ref="progress"
-		class="vac-player-bar"
+		class="vac-player-bar w-100"
 		@mousedown="onMouseDown"
 		@mouseover="$emit('hover-audio-progress', true)"
 		@mouseout="$emit('hover-audio-progress', false)"
 	>
-		<div class="vac-player-progress">
+		<div class="vac-player-progress w-100">
 			<div class="vac-line-container">
 				<div class="vac-line-progress" :style="{ width: `${percentage}%` }" />
 				<div
