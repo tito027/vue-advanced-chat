@@ -148,6 +148,11 @@ export default {
 						this.showLoader = false
 					}
 				}
+				else {
+					if(!this.loadingRooms){
+						setTimeout(() => this.initIntersectionObserver())
+					}
+				}
 			}
 		},
 		room: {
