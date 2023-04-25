@@ -8,7 +8,14 @@
 			{{ textMessages.NEW_MESSAGES }}
 		</div>
 
-		<div v-if="message.system" class="vac-card-info vac-card-system">
+		<div
+			v-if="message.system"
+			class="vac-card-info vac-card-system"
+			:style="{
+				background: message.backgroundColor,
+				color: message.fontColor
+			}"
+		>
 			<format-message
 				:content="message.content"
 				:users="roomUsers"

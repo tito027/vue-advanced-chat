@@ -76,6 +76,8 @@ export interface Message {
 	files?: MessageFile[]
 	reactions?: MessageReactions
 	replyMessage?: Message
+	backgroundColor?: string
+	fontColor?: string
 }
 
 export type Messages = Message[]
