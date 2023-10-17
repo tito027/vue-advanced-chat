@@ -63,8 +63,11 @@
 								<div v-if="typingUsers" class="vac-room-info vac-text-ellipsis">
 									{{ typingUsers }}
 								</div>
-								<div v-else class="vac-room-info vac-text-ellipsis">
+								<div v-else-if="userStatus" class="vac-room-info vac-text-ellipsis">
 									{{ userStatus }}
+								</div>
+								<div v-else class="vac-room-info vac-text-ellipsis">
+									{{ room.interfaceName }}
 								</div>
 							</div>
 						</slot>
