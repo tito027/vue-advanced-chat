@@ -66,6 +66,7 @@
 				:scroll-distance="scrollDistance"
 				:accepted-files="acceptedFiles"
 				:capture-files="captureFiles"
+				:multiple-files="multipleFilesCasted"
 				:templates-text="templatesTextCasted"
 				:username-options="usernameOptionsCasted"
 				:emoji-data-source="emojiDataSource"
@@ -175,7 +176,7 @@ export default {
 		showFiles: { type: [Boolean, String], default: true },
 		showAudio: { type: [Boolean, String], default: true },
 		audioBitRate: { type: Number, default: 128 },
-		audioSampleRate: { type: Number, default: 44100 },
+		audioSampleRate: { type: Number, default: new (window.AudioContext || window.webkitAudioContext)().sampleRate },
 		showEmojis: { type: [Boolean, String], default: true },
 		showReactionEmojis: { type: [Boolean, String], default: true },
 		showNewMessagesDivider: { type: [Boolean, String], default: true },
@@ -199,6 +200,7 @@ export default {
 		scrollDistance: { type: Number, default: 60 },
 		acceptedFiles: { type: String, default: '*' },
 		captureFiles: { type: String, default: '' },
+		multipleFiles: { type: [Boolean, String], default: true },
 		templatesText: { type: [Array, String], default: () => [] },
 		mediaPreviewEnabled: { type: [Boolean, String], default: true },
 		usernameOptions: {
@@ -291,6 +293,9 @@ export default {
 		},
 		messagesLoadedCasted() {
 			return this.castBoolean(this.messagesLoaded)
+		},
+		multipleFilesCasted() {
+			return this.castBoolean(this.multipleFiles)
 		},
 		showSearchCasted() {
 			return this.castBoolean(this.showSearch)
