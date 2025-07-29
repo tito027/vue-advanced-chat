@@ -58,7 +58,7 @@
 						>
 							<div class="vac-text-ellipsis">
 								<div class="vac-room-name vac-text-ellipsis">
-									{{ room.roomName }}
+									{{ room.roomName }} 
 								</div>
 								<div v-if="typingUsers" class="vac-room-info vac-text-ellipsis">
 									{{ typingUsers }}
@@ -67,7 +67,7 @@
 									{{ userStatus }}
 								</div>
 								<div v-else class="vac-room-info vac-text-ellipsis">
-									{{ room.interfaceName }}
+									{{ room.interfaceName }} {{ hasOwner }}
 								</div>
 							</div>
 						</slot>
@@ -172,6 +172,14 @@ export default {
 			}
 
 			return text
+		},
+		hasOwner() {
+			if((!this.room.users || this.room.users.length < 2 )) return;
+			const agent = this.room.users.find(u => u.status && u.status.rol === 'agent')
+
+			if(!agent && this.room.status !== 'open') return
+
+			return `Ticket de agente ${agent.username}`
 		}
 	},
 
